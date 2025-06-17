@@ -1,61 +1,125 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📅 Event Managemnt App (Laravel Frontend)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a Laravel-based client application that consumes a RESTful **Event Management API**. It allows users to sign up, log in, view events, attend/unattend events, and reset their passwords. The app also integrates with a backend notification system for event reminders.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- 🔐 User Authentication (Login, Register, Logout)
+- 📋 List All Events (Public and User-specific)
+- 📝 View Event Details
+- ✅ Attend / Unattend Events
+- 📩 Password Reset via Email
+- 🔔 Receive Event Reminder Notifications (via Mailtrap)
+- 🎯 Role-based Access (Event owner sees attendee list)
+- 🌐 REST API Integration using Laravel HTTP client
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 📦 Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **Laravel 12**
+- **Blade Templates**
+- **Tailwind CSS / Bootstrap**
+- **Laravel Sanctum** (for API authentication)
+- **Mailtrap** (for email testing)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ⚙️ Setup Instructions
 
-## Laravel Sponsors
+### 1. Clone the Repository
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/mechetenco/Event-Management-App.git
+cd event-client-app
+2. Install Dependencies
+bash
+Copy
+Edit
+composer install
+npm install && npm run dev
+3. Configure .env
+Copy .env.example to .env:
 
-### Premium Partners
+bash
+Copy
+Edit
+cp .env.example .env
+Edit the following values:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+dotenv
+Copy
+Edit
+APP_NAME="Event Client"
+APP_URL=http://localhost:8001
 
-## Contributing
+# API Base URL
+API_BASE_URL=http://localhost:8000/api
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Mail Settings (Mailtrap)
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=your_mailtrap_username
+MAIL_PASSWORD=your_mailtrap_password
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=client@app.com
+MAIL_FROM_NAME="Event Client App"
+4. Generate Application Key
+bash
+Copy
+Edit
+php artisan key:generate
+5. Serve the App
+bash
+Copy
+Edit
+php artisan serve --port=8000
+Your client app will be available at http://localhost:8001.
 
-## Code of Conduct
+🔑 Authentication & API Connection
+Users authenticate using credentials via the API.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Upon successful login, the app stores the API token in the session.
 
-## Security Vulnerabilities
+The token is used for authenticated API requests (e.g., attending/unattending events).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+✉️ Password Reset Flow
+User submits email to forgot-password.
 
-## License
+Receives a reset link (via Mailtrap).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Clicks the link, is taken to reset form.
+
+Submits new password; if valid, is redirected to login page.
+
+🔔 Event Reminder Notifications
+Scheduled in the API backend (app/Console/Kernel.php)
+
+Sends email reminders before events.
+
+Mailtrap is used to catch and preview emails.
+
+📂 Project Structure
+bash
+Copy
+Edit
+resources/views/
+    ├── auth/                # Login, register, reset-password forms
+    ├── events/              # Event list, detail, and action buttons
+    └── layouts/             # Base layout
+
+routes/web.php              # Client routes
+app/Http/Controllers/       # Handles user actions and consumes the API
+✅ Useful Commands
+bash
+Copy
+Edit
+php artisan serve --port=9000        # Start dev server
+php artisan config:clear             # Clear config cache
+php artisan route:list               # View client app routes
+📬 Contact
+If you encounter issues or want to contribute, feel free to open an issue or reach out!
+
